@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router()
 
-const { postProduct, getProduct , postFakerProduct} = require("../controller/product")
+const { postProduct, getProduct , postFakerProduct ,deleteProduct } = require("../controller/product")
 
 
 
@@ -11,6 +11,8 @@ router.get("/product", getProduct)
 
 
 router.post("/faker/product", postFakerProduct)
+
+router.delete("/product", deleteProduct)
 
 // router.get("/product/:productId", getByIdProduct);
 

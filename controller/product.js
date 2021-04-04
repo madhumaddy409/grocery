@@ -7,7 +7,7 @@ var faker = require('faker');
 exports.postProduct = (req, res) => {
   
     const products = req.body
-    
+
     Product.create(products,(err, product) => {
         if(err) {
             return res.status(400).json({
@@ -52,3 +52,18 @@ exports.postFakerProduct = async (req, res) => {
     })
 
 };
+
+exports.deleteProduct = async (req, res) => {
+
+    const { id } = req.body
+    try {
+        Product.findByIdAndDelete(id)
+        res.status(200).json({ message: "product removed" });
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+
+    
+
+}
+

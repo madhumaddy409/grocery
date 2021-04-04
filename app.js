@@ -11,8 +11,6 @@ mongoose.connect('mongodb+srv://root:root@cluster0.ue8qu.mongodb.net/grocery?ret
 { useNewUrlParser: true ,
 useUnifiedTopology: true 
 })
-
-
 .then(() => {
     console.log("DB CONNECTED")
 })
@@ -21,6 +19,7 @@ useUnifiedTopology: true
 });
 
 const prodRoutes = require("./routes/product")
+const cartRoutes = require("./routes/cart")
 
 //MiddleWares
 app.use(bodyParser.json())
@@ -30,6 +29,7 @@ app.use(cors())
 
 //Routes
 app.use("/api", prodRoutes)
+app.use("/api", cartRoutes)
 
 const port = Number(process.env.PORT || 3000)
 
