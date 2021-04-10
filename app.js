@@ -20,6 +20,8 @@ useUnifiedTopology: true
 
 const prodRoutes = require("./routes/product")
 const cartRoutes = require("./routes/cart")
+const smsRoutes = require("./routes/sms")
+const verificationRoutes = require("./routes/verificationLogin")
 
 //MiddleWares
 app.use(bodyParser.json())
@@ -30,6 +32,8 @@ app.use(cors())
 //Routes
 app.use("/api", prodRoutes)
 app.use("/api", cartRoutes)
+app.use("/api", smsRoutes)
+app.use("/api", verificationRoutes)
 
 const port = Number(process.env.PORT || 3000)
 
