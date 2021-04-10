@@ -56,15 +56,7 @@ exports.postVarificationLogin = async (req, res)=>{
             password: user.password
         }
 
-        const payload = {
-            user: {
-                phoneNumber: otp[0].phoneNumber,
-                username: user.username
-            }
-        };
-
-
-        console.log(payload)
+        
 
         User.create(resUser,(err, user) => {
             if(err) {
@@ -74,6 +66,18 @@ exports.postVarificationLogin = async (req, res)=>{
             }
 
             try{
+
+                const payload = {
+                    user: {
+                        phoneNumber: otp[0].phoneNumber,
+                        username: user.username,
+                        id: user._id
+                    }
+                };
+        
+        
+                console.log(payload)
+                
             //storing user details to JWT
                     jwt.sign(
                         payload,
