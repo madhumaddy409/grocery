@@ -11,7 +11,7 @@ exports.postVarificationLogin = async (req, res)=>{
     const user = req.body
   
 
-    console.log()
+    console.log(req.body)
        const otp = await Otp.find({otp:user.otp})
     
        
@@ -77,7 +77,7 @@ exports.postVarificationLogin = async (req, res)=>{
         
         
                 console.log(payload)
-                
+
             //storing user details to JWT
                     jwt.sign(
                         payload,

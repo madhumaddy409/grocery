@@ -11,7 +11,7 @@ const client = require('twilio')(accountSid, authToken);
 const Otp = require("../models/otp")
 
 
-exports.postSms = (req, res) =>{
+exports.postSms =  async (req, res) =>{
 
     const user = req.body
 
@@ -32,36 +32,55 @@ exports.postSms = (req, res) =>{
         }
       })
     
-      notifmeSdk.send({
+    notifmeSdk.send({
         sms: {
           from: process.env.TWILIO_PHONE_NUMBER,
           to: user.phone,
           text: `please verify you are account using OTP: ${otp}`
         }
       }).then(
-        message =>{
+        message => {
         //   res.status(200).send(message)
-        var otpStore = {
-            "phoneNumber":user.phone,
-            "otp":otp
+            var otpStore = {
+                "phoneNumber":user.phone,
+                "otp":otp
 
-        }
-        
-        Otp.create(otpStore,(err, otpres) => {
-            if(err) {
-                return res.status(400).json({
-                    err: "Data not saved in DB"
-                })
             }
-            res.status(200).json(otpres)
-        })
+            
+            //otp already in schema
+            console.log(user.phone)
+            try{
 
-        }
-      ).catch(
-        error =>{
-          res.status(400).send(error)
-        }
-      )
+                Otp.findOne({
+                    phoneNumber: user.phone 
+                }).then(msg => {
+                    if(msg === null)
+                    {
+                        Otp.create(otpStore,(err, otpres) => {
+                        if(err) {
+                            return res.status(400).json({
+                                err: "Data not saved in DB"
+                            })
+                        }
+                        res.status(200).json(otpres)
+
+                        })
+                    }
+                    else{
+                        
+                        Otp.findByIdAndUpdate({_id:msg._id},{otp: otp})
+                        .then(msg => {
+                        res.send(msg)
+                        })
+                    }
+                })
+
+            }catch (err) {
+                console.log(err.message);
+                res.status(500).send("Error in Saving");
+            }
+            
+        })
       
 }
     
