@@ -62,8 +62,34 @@ exports.deleteProduct = async (req, res) => {
       } catch (err) {
         res.status(500).json({ message: err.message });
       }
+  
 
+}
+
+
+exports.getByIdProduct = async (req, res) => {
+
+    const  { product_id }  = req.body
     
+
+    if(product_id === '')
+    {
+        return res.send({ "error": 
+            {
+                "message":"there is no productId in request"
+            }
+        })
+    }
+    try {
+        var product = await Product.findById(product_id).exec();
+        res.send(product)
+    } catch (error) {
+        res.status(500).send({
+            "error":{
+                "message":"there is no product"
+            }
+        });
+    }
 
 }
 

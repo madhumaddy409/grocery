@@ -20,7 +20,7 @@ exports.postCart = async (req, res) => {
 
         console.log(cart._id)
         try {
-            var cartProd = await Cart.findById(cart._id).exec();
+            var cartProd = await Cart.findById(cart._id)
             cartProd.set(req.body);
             var result = await cartProd.save();
             res.send(result);
@@ -38,26 +38,6 @@ exports.postCart = async (req, res) => {
                 res.status(200).json(cart)
             })
     }
-
-    //   res.send(cart)
-
-    // if(userId === '')
-    // {
-    //     res.send("userId is null")
-
-    // }else{
-
-        
-
-        
-
-    
-    
-
-
-
-
-
   
 };
 
