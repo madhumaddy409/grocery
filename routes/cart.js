@@ -7,7 +7,7 @@ const { postCart, getCart } = require("../controller/cart")
 
 router.post("/cart", postCart)
 
-router.get("/cart", getCart)
+router.post("/userCart", getCart)
 
 
 

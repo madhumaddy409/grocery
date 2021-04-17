@@ -6,6 +6,7 @@ require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+console.log(accountSid,authToken,process.env.TWILIO_PHONE_NUMBER)
 
 
 const Otp = require("../models/otp")
@@ -20,7 +21,7 @@ exports.postSms =  async (req, res) =>{
     const otp = Math.floor(100000 + Math.random() * 900000)
 
     const notifmeSdk = new NotifmeSdk({
-        useNotificationCatcher: true,
+        useNotificationCatcher: false,
         channels: {
           sms : {
             providers: [{
@@ -62,7 +63,7 @@ exports.postSms =  async (req, res) =>{
                                 err: "Data not saved in DB"
                             })
                         }
-                        res.status(200).json(otpres)
+                        res.status(200).json(message)
 
                         })
                     }
@@ -70,7 +71,7 @@ exports.postSms =  async (req, res) =>{
                         
                         Otp.findByIdAndUpdate({_id:msg._id},{otp: otp})
                         .then(msg => {
-                        res.send(msg)
+                        res.send(message)
                         })
                     }
                 })

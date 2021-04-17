@@ -19,9 +19,13 @@ exports.postCart = (req, res) => {
 };
 
 exports.getCart = async (req, res) => {
+    
+    const userId = req.body
+
+    console.log(userId)
 
     const cart = await Cart.
-    find({}).
+    find(userId).
     populate({ path: 'product.product_id',
     model: 'Products'});
 
