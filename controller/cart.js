@@ -4,18 +4,61 @@ const Cart = require("../models/cart")
 
 const Product = require("../models/product")
 
-exports.postCart = (req, res) => {
+exports.postCart = async (req, res) => {
   
     const carts = req.body
 
-    Cart.create(carts,(err, cart) => {
-        if(err) {
-            return res.status(400).json({
-                err: "Data not saved in DB"
-            })
+    const userId = carts.user_id
+    
+
+    console.log(userId,'test')
+
+    let cart = await Cart.findOne({
+        user_id : userId
+      });
+      if (cart){
+
+        console.log(cart._id)
+        try {
+            var cartProd = await Cart.findById(cart._id).exec();
+            cartProd.set(req.body);
+            var result = await cartProd.save();
+            res.send(result);
+        } catch (error) {
+            res.status(500).send(error);
         }
-        res.status(200).json(cart)
-    })
+      
+    }else{
+            Cart.create(carts,(err, cart) => {
+            if(err) {
+                return res.status(400).json({
+                    err: "Data not saved in DB"
+                })
+            }
+                res.status(200).json(cart)
+            })
+    }
+
+    //   res.send(cart)
+
+    // if(userId === '')
+    // {
+    //     res.send("userId is null")
+
+    // }else{
+
+        
+
+        
+
+    
+    
+
+
+
+
+
+  
 };
 
 exports.getCart = async (req, res) => {
